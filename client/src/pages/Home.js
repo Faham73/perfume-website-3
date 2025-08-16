@@ -11,16 +11,18 @@ const Home = () => {
   const [loading, setLoading] = useState(true);
   const featuredContainerRef = useRef(null);
   const bestsellerContainerRef = useRef(null);
+  const [currentFeaturedIndex, setCurrentFeaturedIndex] = useState(0);
+  const featuredIntervalRef = useRef(null);
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         setLoading(true);
         // Fetch featured products
-        const featuredRes = await axios.get('/api/products?featured=true&limit=3');
+        const featuredRes = await axios.get('/api/products?featured=true&limit=6');
         // Fetch bestsellers
         const bestsellerRes = await axios.get('/api/products?sort=popular&limit=4');
-        
+
         setFeaturedProducts(featuredRes.data.products);
         setBestsellerProducts(bestsellerRes.data.products);
       } catch (error) {
@@ -33,18 +35,53 @@ const Home = () => {
     fetchProducts();
   }, []);
 
+  useEffect(() => {
+    if (featuredProducts.length > 3) {
+      featuredIntervalRef.current = setInterval(() => {
+        setCurrentFeaturedIndex(prev =>
+          (prev + 1) % Math.ceil(featuredProducts.length / 3)
+        );
+      }, 3000); // Scrolls every 3 seconds
+    }
+
+    return () => {
+      if (featuredIntervalRef.current) {
+        clearInterval(featuredIntervalRef.current);
+      }
+    };
+  }, [featuredProducts]);
+
   const scrollLeft = (ref) => {
+    console.log('Scroll container:', ref.current); // Debug
     if (ref.current) {
       ref.current.scrollBy({ left: -300, behavior: 'smooth' });
     }
   };
 
   const scrollRight = (ref) => {
+    console.log('Scroll container:', ref.current); // Debug
     if (ref.current) {
       ref.current.scrollBy({ left: 300, behavior: 'smooth' });
     }
   };
 
+  const handleFeaturedHover = () => {
+    clearInterval(featuredIntervalRef.current);
+  };
+
+  const handleFeaturedLeave = () => {
+    featuredIntervalRef.current = setInterval(() => {
+      setCurrentFeaturedIndex(prev =>
+        (prev + 1) % Math.ceil(featuredProducts.length / 3)
+      );
+    }, 3000);
+  };
+
+  useEffect(() => {
+    console.log(`Current index: ${currentFeaturedIndex}`);
+    console.log('Featured products count:', featuredProducts.length);
+// You need at least 4 products for the effect to work (showing 3 at a time) // Add this line
+  }, [currentFeaturedIndex]);
 
   if (loading) {
     return (
@@ -102,63 +139,56 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Featured Products Section */}
+      {/* Featured Products Section - Auto-scrolling Carousel */}
       <section className="featured-section">
         <div className="container">
           <div className="section-header">
             <h2>Featured Products</h2>
             <p>Handpicked luxury fragrances for the discerning customer</p>
           </div>
-          <div className="products-scroll-wrapper">
-            <button 
-              className="scroll-button left" 
-              onClick={() => scrollLeft(featuredContainerRef)}
+          <div
+            className="featured-carousel-container"
+            onMouseEnter={handleFeaturedHover}
+            onMouseLeave={handleFeaturedLeave}
+          >
+            <div
+              className="featured-carousel"
+              style={{
+                transform: `translateX(-${currentFeaturedIndex * 100}%)`
+              }}
             >
-              <FaChevronLeft />
-            </button>
-            <div 
-              className="products-scroll-container" 
-              ref={featuredContainerRef}
-            >
-              {featuredProducts.length > 0 ? (
-                featuredProducts.map(product => (
-                  <ProductCard key={product._id} product={product} />
-                ))
-              ) : (
-                <div className="no-products">No featured products available</div>
-              )}
+              {featuredProducts.map(product => (
+                <div className="featured-carousel-item" key={product._id}>
+                  <ProductCard product={product} />
+                </div>
+              ))}
             </div>
-            <button 
-              className="scroll-button right" 
-              onClick={() => scrollRight(featuredContainerRef)}
-            >
-              <FaChevronRight />
-            </button>
-          </div>
-          <div className="text-center">
-            <Link to="/products" className="view-all-btn">
-              View All Products
-            </Link>
           </div>
         </div>
-      </section>
+        <div className="text-center">
+          <Link to="/products" className="view-all-btn">
+            View All Products
+          </Link>
+        </div>
+      </section >
+
 
       {/* Bestsellers Section */}
-      <section className="bestsellers-section">
+      < section className="bestsellers-section" >
         <div className="container">
           <div className="section-header">
             <h2>Bestsellers</h2>
             <p>Our most popular fragrances loved by customers worldwide</p>
           </div>
           <div className="products-scroll-wrapper">
-            <button 
-              className="scroll-button left" 
+            <button
+              className="scroll-button left"
               onClick={() => scrollLeft(bestsellerContainerRef)}
             >
               <FaChevronLeft />
             </button>
-            <div 
-              className="products-scroll-container" 
+            <div
+              className="products-scroll-container"
               ref={bestsellerContainerRef}
             >
               {bestsellerProducts.length > 0 ? (
@@ -169,16 +199,16 @@ const Home = () => {
                 <div className="no-products">No bestsellers available</div>
               )}
             </div>
-            <button 
-              className="scroll-button right" 
+            <button
+              className="scroll-button right"
               onClick={() => scrollRight(bestsellerContainerRef)}
             >
               <FaChevronRight />
             </button>
           </div>
         </div>
-      </section>
-    </div>
+      </section >
+    </div >
   );
 };
 

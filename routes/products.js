@@ -13,6 +13,10 @@ router.get('/', async (req, res) => {
 
     // Build filter object
     const filter = {};
+
+    if (req.query.featured) {
+      filter.featured = req.query.featured === 'true';
+    }
     
     if (req.query.category) {
       filter.category = req.query.category;

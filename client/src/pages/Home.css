@@ -1,3 +1,4 @@
+
 .home {
   min-height: 100vh;
 }
@@ -107,6 +108,51 @@
 
 .featured-section {
   background: #ffffff;
+}
+/* Featured Carousel Styles */
+.featured-carousel-container {
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+}
+
+.featured-carousel {
+  display: flex;
+  transition: transform 0.5s ease;
+}
+
+.featured-carousel-item {
+  flex: 0 0 33.33%; /* Show 3 at a time */
+  padding: 0 10px;
+}
+
+.carousel-button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.7);
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.carousel-button.left {
+  left: 10px;
+}
+
+.carousel-button.right {
+  right: 10px;
+}
+
+.carousel-button:hover {
+  background: rgba(255, 255, 255, 0.9);
 }
 
 .products-grid {
@@ -434,21 +480,49 @@
 .products-scroll-wrapper {
   position: relative;
   width: 100%;
-  margin: 30px 0;
 }
 
 .products-scroll-container {
   display: flex;
   overflow-x: auto;
   scroll-behavior: smooth;
-  padding: 20px 0;
+  gap: 20px;
+  padding: 10px 0;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
-  gap: 20px;
 }
 
 .products-scroll-container::-webkit-scrollbar {
   display: none;
+}
+
+.scroll-button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 1;
+}
+
+.scroll-button.left {
+  left: 10px;
+}
+
+.scroll-button.right {
+  right: 10px;
+}
+
+.scroll-button:hover {
+  background: rgba(0, 0, 0, 0.8);
 }
 
 .no-products {
