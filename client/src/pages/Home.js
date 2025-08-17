@@ -1,7 +1,6 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import { FaStar, FaEye, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import './Home.css';
 import ProductCard from '../components/ProductCard/ProductCard';
 
@@ -9,20 +8,13 @@ const Home = () => {
   const [featuredProducts, setFeaturedProducts] = useState([]);
   const [bestsellerProducts, setBestsellerProducts] = useState([]);
   const [loading, setLoading] = useState(true);
-  const featuredContainerRef = useRef(null);
-  const bestsellerContainerRef = useRef(null);
-  const [currentFeaturedIndex, setCurrentFeaturedIndex] = useState(0);
-  const featuredIntervalRef = useRef(null);
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         setLoading(true);
-        // Fetch featured products
         const featuredRes = await axios.get('/api/products?featured=true&limit=6');
-        // Fetch bestsellers
-        const bestsellerRes = await axios.get('/api/products?sort=popular&limit=4');
-
+        const bestsellerRes = await axios.get('/api/products?sort=popular&limit=6');
         setFeaturedProducts(featuredRes.data.products);
         setBestsellerProducts(bestsellerRes.data.products);
       } catch (error) {
@@ -35,71 +27,25 @@ const Home = () => {
     fetchProducts();
   }, []);
 
-  useEffect(() => {
-    if (featuredProducts.length > 3) {
-      featuredIntervalRef.current = setInterval(() => {
-        setCurrentFeaturedIndex(prev =>
-          (prev + 1) % Math.ceil(featuredProducts.length / 3)
-        );
-      }, 3000); // Scrolls every 3 seconds
-    }
-
-    return () => {
-      if (featuredIntervalRef.current) {
-        clearInterval(featuredIntervalRef.current);
-      }
-    };
-  }, [featuredProducts]);
-
-  const scrollLeft = (ref) => {
-    console.log('Scroll container:', ref.current); // Debug
-    if (ref.current) {
-      ref.current.scrollBy({ left: -300, behavior: 'smooth' });
-    }
-  };
-
-  const scrollRight = (ref) => {
-    console.log('Scroll container:', ref.current); // Debug
-    if (ref.current) {
-      ref.current.scrollBy({ left: 300, behavior: 'smooth' });
-    }
-  };
-
-  const handleFeaturedHover = () => {
-    clearInterval(featuredIntervalRef.current);
-  };
-
-  const handleFeaturedLeave = () => {
-    featuredIntervalRef.current = setInterval(() => {
-      setCurrentFeaturedIndex(prev =>
-        (prev + 1) % Math.ceil(featuredProducts.length / 3)
-      );
-    }, 3000);
-  };
-
-  useEffect(() => {
-    console.log(`Current index: ${currentFeaturedIndex}`);
-    console.log('Featured products count:', featuredProducts.length);
-// You need at least 4 products for the effect to work (showing 3 at a time) // Add this line
-  }, [currentFeaturedIndex]);
-
   if (loading) {
     return (
-      <div className="loading">
+      <div className="loading-spinner">
         <div className="spinner"></div>
       </div>
     );
   }
 
   return (
-    <div className="home">
+    <div className="home-page">
       {/* Hero Section */}
-      <section className="hero">
+      <section className="hero-section">
         <div className="hero-overlay"></div>
         <div className="hero-content">
           <h1>ORKIDIES</h1>
-          <p>Where Scent Meets Luxury</p>
-          <p className="hero-subtext">Orkidies creates unforgettable scents that define your identity, boost confidence, and leave a lasting impression. Experience the art of fragrance with us.</p>
+          <p className="hero-tagline">Where Scent Meets Luxury</p>
+          <p className="hero-description">
+            Crafting unforgettable fragrances that define your identity and leave a lasting impression.
+          </p>
           <Link to="/products" className="cta-button">
             Explore Collections
           </Link>
@@ -111,104 +57,69 @@ const Home = () => {
         <div className="container">
           <div className="section-header">
             <h2>Shop by Category</h2>
-            <p>Find the perfect fragrance for your style</p>
+            <p>Discover fragrances for every personality</p>
           </div>
           <div className="categories-grid">
             <div className="category-card men">
               <h3>Men's Fragrances</h3>
-              <p>Sophisticated scents for the modern gentleman</p>
+              <p>Bold scents for the modern man</p>
               <Link to="/products?category=Men" className="category-link">
-                Shop Men's
+                Shop Now
               </Link>
             </div>
             <div className="category-card women">
               <h3>Women's Fragrances</h3>
-              <p>Elegant perfumes for the confident woman</p>
+              <p>Elegant perfumes for every occasion</p>
               <Link to="/products?category=Women" className="category-link">
-                Shop Women's
+                Shop Now
               </Link>
             </div>
             <div className="category-card unisex">
               <h3>Unisex Fragrances</h3>
-              <p>Versatile scents for everyone</p>
+              <p>Versatile scents for all</p>
               <Link to="/products?category=Unisex" className="category-link">
-                Shop Unisex
+                Shop Now
               </Link>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Featured Products Section - Auto-scrolling Carousel */}
-      <section className="featured-section">
+      {/* Featured Products */}
+      <section className="featured-products">
         <div className="container">
           <div className="section-header">
-            <h2>Featured Products</h2>
-            <p>Handpicked luxury fragrances for the discerning customer</p>
+            <h2>Featured Fragrances</h2>
+            <p>Our most exquisite creations</p>
           </div>
-          <div
-            className="featured-carousel-container"
-            onMouseEnter={handleFeaturedHover}
-            onMouseLeave={handleFeaturedLeave}
-          >
-            <div
-              className="featured-carousel"
-              style={{
-                transform: `translateX(-${currentFeaturedIndex * 100}%)`
-              }}
-            >
-              {featuredProducts.map(product => (
-                <div className="featured-carousel-item" key={product._id}>
-                  <ProductCard product={product} />
-                </div>
-              ))}
-            </div>
+          <div className="products-grid">
+            {featuredProducts.map(product => (
+              <ProductCard key={product._id} product={product} />
+            ))}
+          </div>
+          <div className="view-all-container">
+            <Link to="/products" className="view-all-button">
+              View All Products
+            </Link>
           </div>
         </div>
-        <div className="text-center">
-          <Link to="/products" className="view-all-btn">
-            View All Products
-          </Link>
-        </div>
-      </section >
+      </section>
 
-
-      {/* Bestsellers Section */}
-      < section className="bestsellers-section" >
+      {/* Bestsellers */}
+      <section className="bestsellers-section">
         <div className="container">
           <div className="section-header">
-            <h2>Bestsellers</h2>
-            <p>Our most popular fragrances loved by customers worldwide</p>
+            <h2>Customer Favorites</h2>
+            <p>Most loved fragrances</p>
           </div>
-          <div className="products-scroll-wrapper">
-            <button
-              className="scroll-button left"
-              onClick={() => scrollLeft(bestsellerContainerRef)}
-            >
-              <FaChevronLeft />
-            </button>
-            <div
-              className="products-scroll-container"
-              ref={bestsellerContainerRef}
-            >
-              {bestsellerProducts.length > 0 ? (
-                bestsellerProducts.map(product => (
-                  <ProductCard key={product._id} product={product} />
-                ))
-              ) : (
-                <div className="no-products">No bestsellers available</div>
-              )}
-            </div>
-            <button
-              className="scroll-button right"
-              onClick={() => scrollRight(bestsellerContainerRef)}
-            >
-              <FaChevronRight />
-            </button>
+          <div className="products-grid">
+            {bestsellerProducts.map(product => (
+              <ProductCard key={product._id} product={product} />
+            ))}
           </div>
         </div>
-      </section >
-    </div >
+      </section>
+    </div>
   );
 };
 

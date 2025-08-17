@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { useCart } from '../contexts/CartContext';
 import axios from 'axios';
-import { FaStar, FaShoppingCart, FaEye, FaFilter } from 'react-icons/fa';
+import { FaStar, FaShoppingCart, FaEye, FaFilter, FaTimes, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
+import { IoMdClose } from 'react-icons/io';
 import './Products.css';
 import ProductCard from '../components/ProductCard/ProductCard';
 
@@ -11,6 +12,7 @@ const Products = () => {
   const [loading, setLoading] = useState(true);
   const [categories, setCategories] = useState([]);
   const [brands, setBrands] = useState([]);
+  const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const [filters, setFilters] = useState({
     category: '',
     brand: '',
@@ -75,41 +77,104 @@ const Products = () => {
     setPagination(prev => ({ ...prev, currentPage: 1 }));
   };
 
+  const resetFilters = () => {
+    setFilters({
+      category: '',
+      brand: '',
+      minPrice: '',
+      maxPrice: '',
+      sort: 'newest'
+    });
+  };
+
   const handlePageChange = (page) => {
     setPagination(prev => ({ ...prev, currentPage: page }));
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleAddToCart = (product) => {
     addToCart(product, 1);
+    // Optional: Show a toast notification here
   };
 
+  const LoadingSpinner = () => (
+    <div className="loading-spinner">
+      <div className="spinner"></div>
+    </div>
+  );
+
+  const activeFiltersCount = Object.values(filters).filter(
+    val => val !== '' && val !== 'newest'
+  ).length;
+
   if (loading) {
-    return (
-      <div className="loading">
-        <div className="spinner"></div>
-      </div>
-    );
+    return <LoadingSpinner />;
   }
 
   return (
     <div className="products-page">
+      {/* Hero Banner */}
+      <div className="products-hero">
+        <div className="container">
+          <div className="hero-content">
+            <h1>Luxury Fragrance Collection</h1>
+            <p>Discover scents that define moments and create memories</p>
+          </div>
+        </div>
+      </div>
+
       <div className="container">
-        <div className="products-header">
-          <h1>Our Perfume Collection</h1>
-          <p>Discover luxury fragrances for every occasion</p>
+        {/* Mobile Filter Toggle */}
+        <div className="mobile-filter-header">
+          <button
+            className="btn-filter-toggle"
+            onClick={() => setMobileFiltersOpen(true)}
+          >
+            <FaFilter /> Filters {activeFiltersCount > 0 && `(${activeFiltersCount})`}
+          </button>
         </div>
 
         <div className="products-layout">
           {/* Filters Sidebar */}
-          <div className="filters-sidebar">
+          <div className={`filters-sidebar ${mobileFiltersOpen ? 'mobile-open' : ''}`}>
+            <div className="filter-header">
+              <h3>Filters</h3>
+              <button
+                className="btn-close-filters"
+                onClick={() => setMobileFiltersOpen(false)}
+              >
+                <IoMdClose />
+              </button>
+            </div>
+
             <div className="filter-section">
-              <h3><FaFilter /> Filters</h3>
+              {activeFiltersCount > 0 && (
+                <button className="btn-reset-filters" onClick={resetFilters}>
+                  Clear All Filters
+                </button>
+              )}
+
+              <div className="filter-group">
+                <label>Sort By</label>
+                <select
+                  value={filters.sort}
+                  onChange={(e) => handleFilterChange('sort', e.target.value)}
+                  className="select-filter"
+                >
+                  <option value="newest">Newest First</option>
+                  <option value="price-low">Price: Low to High</option>
+                  <option value="price-high">Price: High to Low</option>
+                  <option value="name">Name A-Z</option>
+                  <option value="rating">Highest Rated</option>
+                </select>
+              </div>
 
               <div className="filter-group">
                 <label>Category</label>
                 <select
                   value={filters.category}
                   onChange={(e) => handleFilterChange('category', e.target.value)}
+                  className="select-filter"
                 >
                   <option value="">All Categories</option>
                   {categories.map(category => (
@@ -123,6 +188,7 @@ const Products = () => {
                 <select
                   value={filters.brand}
                   onChange={(e) => handleFilterChange('brand', e.target.value)}
+                  className="select-filter"
                 >
                   <option value="">All Brands</option>
                   {brands.map(brand => (
@@ -139,39 +205,40 @@ const Products = () => {
                     placeholder="Min"
                     value={filters.minPrice}
                     onChange={(e) => handleFilterChange('minPrice', e.target.value)}
+                    className="price-input"
                   />
-                  <span>-</span>
+                  <span className="price-separator">—</span>
                   <input
                     type="number"
                     placeholder="Max"
                     value={filters.maxPrice}
                     onChange={(e) => handleFilterChange('maxPrice', e.target.value)}
+                    className="price-input"
                   />
                 </div>
-              </div>
-
-              <div className="filter-group">
-                <label>Sort By</label>
-                <select
-                  value={filters.sort}
-                  onChange={(e) => handleFilterChange('sort', e.target.value)}
-                >
-                  <option value="newest">Newest First</option>
-                  <option value="price-low">Price: Low to High</option>
-                  <option value="price-high">Price: High to Low</option>
-                  <option value="name">Name A-Z</option>
-                  <option value="rating">Highest Rated</option>
-                </select>
               </div>
             </div>
           </div>
 
-          {/* Products Grid */}
+          {/* Products Content */}
           <div className="products-content">
+            {/* Results Summary */}
+            <div className="results-summary">
+              <p>
+                Showing {products.length} of {pagination.totalProducts} products
+                {activeFiltersCount > 0 && ' (filtered)'}
+              </p>
+            </div>
+
             {products.length === 0 ? (
               <div className="no-products">
-                <h3>No products found</h3>
-                <p>Try adjusting your filters or search criteria</p>
+                <div className="no-products-content">
+                  <h3>No fragrances match your search</h3>
+                  <p>Try adjusting your filters or browse our full collection</p>
+                  <button className="btn-reset" onClick={resetFilters}>
+                    Reset All Filters
+                  </button>
+                </div>
               </div>
             ) : (
               <>
@@ -191,27 +258,55 @@ const Products = () => {
                     <button
                       onClick={() => handlePageChange(pagination.currentPage - 1)}
                       disabled={pagination.currentPage === 1}
-                      className="page-btn"
+                      className="page-btn prev-next"
                     >
-                      Previous
+                      <FaChevronLeft /> Previous
                     </button>
 
-                    {Array.from({ length: pagination.totalPages }, (_, i) => i + 1).map(page => (
-                      <button
-                        key={page}
-                        onClick={() => handlePageChange(page)}
-                        className={`page-btn ${page === pagination.currentPage ? 'active' : ''}`}
-                      >
-                        {page}
-                      </button>
-                    ))}
+                    <div className="page-numbers">
+                      {Array.from({ length: Math.min(5, pagination.totalPages) }, (_, i) => {
+                        let pageNum;
+                        if (pagination.totalPages <= 5) {
+                          pageNum = i + 1;
+                        } else if (pagination.currentPage <= 3) {
+                          pageNum = i + 1;
+                        } else if (pagination.currentPage >= pagination.totalPages - 2) {
+                          pageNum = pagination.totalPages - 4 + i;
+                        } else {
+                          pageNum = pagination.currentPage - 2 + i;
+                        }
+
+                        return (
+                          <button
+                            key={pageNum}
+                            onClick={() => handlePageChange(pageNum)}
+                            className={`page-btn ${pageNum === pagination.currentPage ? 'active' : ''}`}
+                          >
+                            {pageNum}
+                          </button>
+                        );
+                      })}
+
+                      {pagination.totalPages > 5 && pagination.currentPage < pagination.totalPages - 2 && (
+                        <span className="page-ellipsis">...</span>
+                      )}
+
+                      {pagination.totalPages > 5 && pagination.currentPage < pagination.totalPages - 2 && (
+                        <button
+                          onClick={() => handlePageChange(pagination.totalPages)}
+                          className={`page-btn ${pagination.totalPages === pagination.currentPage ? 'active' : ''}`}
+                        >
+                          {pagination.totalPages}
+                        </button>
+                      )}
+                    </div>
 
                     <button
                       onClick={() => handlePageChange(pagination.currentPage + 1)}
                       disabled={pagination.currentPage === pagination.totalPages}
-                      className="page-btn"
+                      className="page-btn prev-next"
                     >
-                      Next
+                      Next <FaChevronRight />
                     </button>
                   </div>
                 )}
