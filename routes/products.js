@@ -17,15 +17,16 @@ router.get('/', async (req, res) => {
     if (req.query.featured) {
       filter.featured = req.query.featured === 'true';
     }
-    
+
     if (req.query.category) {
-      filter.category = req.query.category;
+      filter.category = new RegExp(`^${req.query.category}$`, 'i');  // case-insensitive exact match
     }
-    
+
+
     if (req.query.brand) {
       filter.brand = req.query.brand;
     }
-    
+
     if (req.query.minPrice || req.query.maxPrice) {
       filter.price = {};
       if (req.query.minPrice) filter.price.$gte = parseFloat(req.query.minPrice);
@@ -116,7 +117,7 @@ router.get('/bestsellers', async (req, res) => {
 router.get('/search', async (req, res) => {
   try {
     const { q } = req.query;
-    
+
     if (!q) {
       return res.status(400).json({ message: 'Search query is required' });
     }

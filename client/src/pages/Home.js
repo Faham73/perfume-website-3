@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import './Home.css';
 import ProductCard from '../components/ProductCard/ProductCard';
+import newFregranceImage from '../components/Assets/images/fragrance-hero.jpg';
+import heroVideo from "../components/Assets/video/MVI_0414.MP4"
 
 const Home = () => {
   const [featuredProducts, setFeaturedProducts] = useState([]);
@@ -39,49 +41,14 @@ const Home = () => {
     <div className="home-page">
       {/* Hero Section */}
       <section className="hero-section">
+        {/* Video Background */}
+        <video className="hero-video" autoPlay loop muted playsInline>
+          <source src={heroVideo} type="video/mp4" />
+        </video>
         <div className="hero-overlay"></div>
         <div className="hero-content">
           <h1>ORKIDIES</h1>
           <p className="hero-tagline">Where Scent Meets Luxury</p>
-          <p className="hero-description">
-            Crafting unforgettable fragrances that define your identity and leave a lasting impression.
-          </p>
-          <Link to="/products" className="cta-button">
-            Explore Collections
-          </Link>
-        </div>
-      </section>
-
-      {/* Categories */}
-      <section className="categories-section">
-        <div className="container">
-          <div className="section-header">
-            <h2>Shop by Category</h2>
-            <p>Discover fragrances for every personality</p>
-          </div>
-          <div className="categories-grid">
-            <div className="category-card men">
-              <h3>Men's Fragrances</h3>
-              <p>Bold scents for the modern man</p>
-              <Link to="/products?category=Men" className="category-link">
-                Shop Now
-              </Link>
-            </div>
-            <div className="category-card women">
-              <h3>Women's Fragrances</h3>
-              <p>Elegant perfumes for every occasion</p>
-              <Link to="/products?category=Women" className="category-link">
-                Shop Now
-              </Link>
-            </div>
-            <div className="category-card unisex">
-              <h3>Unisex Fragrances</h3>
-              <p>Versatile scents for all</p>
-              <Link to="/products?category=Unisex" className="category-link">
-                Shop Now
-              </Link>
-            </div>
-          </div>
         </div>
       </section>
 
@@ -97,11 +64,66 @@ const Home = () => {
               <ProductCard key={product._id} product={product} />
             ))}
           </div>
-          <div className="view-all-container">
+          <div className="view-all-container"> 
             <Link to="/products" className="view-all-button">
               View All Products
             </Link>
           </div>
+        </div>
+      </section>
+
+      {/* New Arrivals */}
+      <section className="perfume-section">
+        <div className="perfume-top-left">
+          <img
+            src={newFregranceImage}
+            alt="Chanel N°5"
+            className="perfume-small-img"
+          />
+          <img
+            src={newFregranceImage}
+            alt="Gabrielle Chanel"
+            className="perfume-large-img"
+          />
+        </div>
+
+        <div className="perfume-top-right">
+          <p className="perfume-small-text">OUR ORIGINAL PERFUME</p>
+          <h2 className="perfume-title">
+            THE <br />
+            NEW <br />
+            FRAGRANCE
+          </h2>
+          <p className="perfume-desc">
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+          </p>
+          <button className="btn-black">SHOP NOW</button>
+        </div>
+
+        <div className="perfume-bottom-left">
+          <p className="perfume-small-text">EAU DE TOILETTE</p>
+          <h2 className="perfume-title">
+            INSTINCTIVE <br />
+            AND <br />
+            ELECTRIC
+          </h2>
+          <p className="perfume-desc">
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+          </p>
+          <button className="btn-black">DISCOVER</button>
+        </div>
+
+        <div className="perfume-bottom-right">
+          <img
+            src={newFregranceImage}
+            alt="Paris Venise Chanel"
+            className="perfume-large-img"
+          />
+          <img
+            src={newFregranceImage}
+            alt="Chanel N°5 Pure"
+            className="perfume-small-img-bottom"
+          />
         </div>
       </section>
 

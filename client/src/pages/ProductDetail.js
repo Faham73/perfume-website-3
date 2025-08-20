@@ -384,16 +384,10 @@ const ProductDetail = () => {
                 <div className="delivery-icon">🚚</div>
                 <div className="delivery-info">
                   <h4>Free Shipping</h4>
-                  <p>On orders over $100. Delivery in 2-3 business days.</p>
+                  <p>On orders over 1000. Delivery in 2-3 business days.</p>
                 </div>
               </div>
-              <div className="delivery-option">
-                <div className="delivery-icon">🔄</div>
-                <div className="delivery-info">
-                  <h4>Easy Returns</h4>
-                  <p>30-day return policy. No questions asked.</p>
-                </div>
-              </div>
+              
             </div>
           </div>
         </div>
@@ -414,18 +408,6 @@ const ProductDetail = () => {
               <div className="spec-item">
                 <span className="spec-label">Brand</span>
                 <span className="spec-value">{product.brand}</span>
-              </div>
-              <div className="spec-item">
-                <span className="spec-label">Dimensions</span>
-                <span className="spec-value">{product.dimensions || 'N/A'}</span>
-              </div>
-              <div className="spec-item">
-                <span className="spec-label">Weight</span>
-                <span className="spec-value">{product.weight || 'N/A'}</span>
-              </div>
-              <div className="spec-item">
-                <span className="spec-label">Color</span>
-                <span className="spec-value">{product.color || 'As pictured'}</span>
               </div>
             </div>
           </div>
@@ -517,68 +499,6 @@ const ProductDetail = () => {
               </div>
             )}
 
-            {/* Review Form */}
-            <div className="review-form-section">
-              <h3>Write a Review</h3>
-              {error && <div className="review-error">{error}</div>}
-              <form className="review-form" onSubmit={handleReviewSubmit}>
-                <div className="form-group">
-                  <label>Your Rating</label>
-                  <div className="star-rating-input">
-                    {[...Array(5)].map((_, i) => (
-                      <FaStar
-                        key={i}
-                        className={`star-input ${i < reviewForm.rating ? 'active' : ''}`}
-                        onClick={() => handleStarClick(i + 1)}
-                      />
-                    ))}
-                    <span className="rating-text">{reviewForm.rating} Star{reviewForm.rating > 1 ? 's' : ''}</span>
-                  </div>
-                </div>
-                
-                <div className="form-group">
-                  <label htmlFor="review-title">Review Title</label>
-                  <input
-                    type="text"
-                    id="review-title"
-                    name="title"
-                    className="form-control"
-                    placeholder="Summarize your experience"
-                  />
-                </div>
-                
-                <div className="form-group">
-                  <label htmlFor="review-comment">Your Review</label>
-                  <textarea
-                    id="review-comment"
-                    name="comment"
-                    value={reviewForm.comment}
-                    onChange={handleReviewChange}
-                    className="form-control"
-                    rows={5}
-                    required
-                    placeholder="Share your experience with this product..."
-                  />
-                </div>
-                
-                <div className="form-group">
-                  <label>Add Photos (Optional)</label>
-                  <div className="image-upload">
-                    <div className="upload-preview">
-                      <div className="upload-placeholder">
-                        <span>+</span>
-                        <p>Add Photo</p>
-                      </div>
-                    </div>
-                    <input type="file" id="review-images" multiple accept="image/*" style={{ display: 'none' }} />
-                  </div>
-                </div>
-                
-                <button className="btn-luxury" type="submit" disabled={submittingReview}>
-                  {submittingReview ? 'Submitting...' : 'Submit Review'}
-                </button>
-              </form>
-            </div>
           </div>
           
           <input type="radio" id="tab3" name="tabs" />
@@ -590,21 +510,8 @@ const ProductDetail = () => {
                 <h4>Standard Shipping</h4>
                 <p>Free on orders over $100. Delivery in 3-5 business days.</p>
               </div>
-              <div className="shipping-option">
-                <h4>Express Shipping</h4>
-                <p>$15. Delivery in 1-2 business days.</p>
-              </div>
-              <div className="shipping-option">
-                <h4>International Shipping</h4>
-                <p>Available to most countries. Rates calculated at checkout.</p>
-              </div>
+              
             </div>
-            
-            <h3>Returns & Exchanges</h3>
-            <p>We offer a 30-day return policy for most items. Items must be in original condition with all tags attached. 
-            Please contact our customer service team to initiate a return.</p>
-            
-            <h3>Additional Information</h3>
             <p>For any questions regarding shipping or returns, please contact our customer service team at 
             support@luxuryshop.com or call us at (555) 123-4567.</p>
           </div>

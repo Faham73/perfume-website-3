@@ -71,14 +71,13 @@ const ProductCard = ({ product, onAddToCart }) => {
         </div>
         <div className="product-info">
           <h3 className="product-name">{product.name}</h3>
-          <p className="product-description">
-            {getShortDescription(product.description)}
-          </p>
+          {/* Optional: Remove description or place on hover/card front */}
+          {/* <p className="product-description">{getShortDescription(product.description)}</p> */}
+          <div className="product-price">${product.price}</div>
           <div className="product-rating">
             {renderStars()}
             <span className="rating-count">({product.numOfReviews || 0})</span>
           </div>
-          <div className="product-price">${product.price}</div>
         </div>
       </Link>
       <button className="add-to-cart-btn" onClick={handleAddToCartClick} style={buttonStyle} >
@@ -86,6 +85,7 @@ const ProductCard = ({ product, onAddToCart }) => {
       </button>
     </div>
   );
+
 };
 
 export default ProductCard;

@@ -30,6 +30,37 @@ const Products = () => {
   const { addToCart } = useCart();
 
   useEffect(() => {
+    // When the component mounts or searchParams change, update filters.
+    const category = searchParams.get('category') || '';
+    const brand = searchParams.get('brand') || '';
+    const minPrice = searchParams.get('minPrice') || '';
+    const maxPrice = searchParams.get('maxPrice') || '';
+    const sort = searchParams.get('sort') || 'newest';
+    setFilters({
+      category,
+      brand,
+      minPrice,
+      maxPrice,
+      sort
+    });
+    setPagination(prev => ({ ...prev, currentPage: 1 })); // Always set page to 1
+  }, [searchParams]);
+
+  const cleanFilters = {};
+  Object.entries(filters).forEach(([key, val]) => {
+    if (val !== '' && val !== null && val !== undefined) {
+      cleanFilters[key] = val;
+    }
+  });
+
+  const params = new URLSearchParams({
+    page: pagination.currentPage,
+    limit: 12,
+    ...cleanFilters
+  });
+
+
+  useEffect(() => {
     fetchProducts();
     fetchCategories();
     fetchBrands();
@@ -37,12 +68,22 @@ const Products = () => {
 
   const fetchProducts = async () => {
     try {
-      setLoading(true);
+      const cleanFilters = {};
+      Object.entries(filters).forEach(([key, val]) => {
+        if (val !== '' && val !== null && val !== undefined) {
+          cleanFilters[key] = val;
+        }
+      });
+
       const params = new URLSearchParams({
         page: pagination.currentPage,
         limit: 12,
-        ...filters
+        ...cleanFilters
       });
+
+
+      console.log('Fetching products with params:', params);
+
 
       const response = await axios.get(`/api/products?${params}`);
       setProducts(response.data.products);

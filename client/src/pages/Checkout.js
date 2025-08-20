@@ -391,19 +391,7 @@ const Checkout = () => {
                         {errors.transactionId && <span className="error-message">{errors.transactionId}</span>}
                       </div>
                     </div>
-                    <div className="payment-instructions">
-                      <h4>How to pay with bKash:</h4>
-                      <ol>
-                        <li>Go to your bKash Mobile Menu by dialing *247#</li>
-                        <li>Choose "Payment"</li>
-                        <li>Enter our Merchant bKash Number: <strong>017XXXXXXXX</strong></li>
-                        <li>Enter amount: <strong>৳{grandTotal.toFixed(2)}</strong></li>
-                        <li>Enter reference: <strong>Order#{Math.floor(Math.random() * 10000)}</strong></li>
-                        <li>Enter the counter number: <strong>1</strong></li>
-                        <li>Now enter your bKash PIN to confirm</li>
-                        <li>Copy the Transaction ID (TrxID) and paste above</li>
-                      </ol>
-                    </div>
+                    
                   </div>
                 )}
 
@@ -494,7 +482,6 @@ const Checkout = () => {
               
               <div className="return-policy">
                 <h4><FaBox /> Return Policy</h4>
-                <p>Easy 7-day returns and exchanges. Damaged or defective items eligible for free returns.</p>
               </div>
             </div>
           </div>
