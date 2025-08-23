@@ -8,6 +8,11 @@ require('dotenv').config({ path: './config.env' });
 
 const app = express();
 
+// ✅ Trust proxy in production
+if (process.env.NODE_ENV === 'production') {
+  app.set('trust proxy', 1); 
+}
+
 // Enhanced CORS Configuration
 app.use(cors({
   origin: [
@@ -113,7 +118,7 @@ app.use((err, req, res, next) => {
   // Default error handler
   res.status(500).json({ 
     status: 'error',
-    message: process.env.NODE_ENV === 'development' ? err.message : 'Something went wrong!'
+    message: process.env.NODE_ENV === 'production' ? err.message : 'Something went wrong!'
   });
 });
 
@@ -128,7 +133,7 @@ app.use('*', (req, res) => {
 // Server configuration
 const PORT = process.env.PORT || 5000;
 const server = app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT} in ${process.env.NODE_ENV || 'development'} mode`);
+  console.log(`Server running on port ${PORT} in ${process.env.NODE_ENV || 'production'} mode`);
 });
 
 // Handle unhandled promise rejections

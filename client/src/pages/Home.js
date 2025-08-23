@@ -64,7 +64,7 @@ const Home = () => {
               <ProductCard key={product._id} product={product} />
             ))}
           </div>
-          <div className="view-all-container"> 
+          <div className="view-all-container">
             <Link to="/products" className="view-all-button">
               View All Products
             </Link>
@@ -73,59 +73,50 @@ const Home = () => {
       </section>
 
       {/* New Arrivals */}
-      <section className="perfume-section">
-        <div className="perfume-top-left">
-          <img
-            src={newFregranceImage}
-            alt="Chanel N°5"
-            className="perfume-small-img"
-          />
-          <img
-            src={newFregranceImage}
-            alt="Gabrielle Chanel"
-            className="perfume-large-img"
-          />
+      <section class="perfume-section">
+        {/* Top Left */}
+        <div class="perfume-top-left">
+          <img src={newFregranceImage} alt="Chanel N°5" class="perfume-small-img-top" />
+          <img src={newFregranceImage} alt="Gabrielle Chanel" class="perfume-large-img-top" />
         </div>
 
-        <div className="perfume-top-right">
-          <p className="perfume-small-text">OUR ORIGINAL PERFUME</p>
-          <h2 className="perfume-title">
+        {/* Top Right */}
+        <div class="perfume-top-right">
+          <p class="perfume-small-text">OUR ORIGINAL PERFUME</p>
+          <h2 class="perfume-title">
             THE <br />
             NEW <br />
             FRAGRANCE
           </h2>
-          <p className="perfume-desc">
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+          <p class="perfume-desc">
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+            tempor incididunt ut labore et dolore magna aliqua.
           </p>
-          <button className="btn-black">SHOP NOW</button>
+          <button class="btn-black">SHOP NOW</button>
         </div>
 
-        <div className="perfume-bottom-left">
-          <p className="perfume-small-text">EAU DE TOILETTE</p>
-          <h2 className="perfume-title">
+        {/* Bottom Left */}
+        <div class="perfume-bottom-left">
+          <p class="perfume-small-text">EAU DE TOILETTE</p>
+          <h2 class="perfume-title">
             INSTINCTIVE <br />
             AND <br />
             ELECTRIC
           </h2>
-          <p className="perfume-desc">
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+          <p class="perfume-desc">
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+            tempor incididunt ut labore et dolore magna aliqua.
           </p>
-          <button className="btn-black">DISCOVER</button>
+          <button class="btn-black">DISCOVER</button>
         </div>
 
-        <div className="perfume-bottom-right">
-          <img
-            src={newFregranceImage}
-            alt="Paris Venise Chanel"
-            className="perfume-large-img"
-          />
-          <img
-            src={newFregranceImage}
-            alt="Chanel N°5 Pure"
-            className="perfume-small-img-bottom"
-          />
+        {/* Bottom Right */}
+        <div class="perfume-bottom-right">
+          <img src={newFregranceImage} alt="Paris Venise Chanel" class="perfume-large-img-bottom" />
+          <img src={newFregranceImage} alt="Chanel N°5 Pure" class="perfume-small-img-bottom" />
         </div>
       </section>
+
 
       {/* Bestsellers */}
       <section className="bestsellers-section">
