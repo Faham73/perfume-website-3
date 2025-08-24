@@ -9,6 +9,7 @@
     "client": "cd client && npm start",
     "build": "cd client && npm run build",
     "install-client": "cd client && npm install",
+    "postinstall": "npm install --prefix client --include=dev --legacy-peer-deps && npm run build --prefix client",
     "heroku-postbuild": "npm run install-client && npm run build"
   },
   "keywords": [

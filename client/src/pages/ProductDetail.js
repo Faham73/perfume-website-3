@@ -5,7 +5,7 @@ import api from '../utils/axios';
 import { FaStar, FaShoppingCart, FaChevronLeft, FaChevronRight, FaUserCircle, FaHeart, FaShare, FaExpand } from 'react-icons/fa';
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
 import InnerImageZoom from 'react-inner-image-zoom';
-import 'react-inner-image-zoom/lib/styles.css';
+import 'react-inner-image-zoom/lib/InnerImageZoom/styles.css';
 import './ProductDetail.css';
 
 const ProductDetail = () => {
@@ -55,13 +55,13 @@ const ProductDetail = () => {
   };
 
   const handleNextImage = () => {
-    setSelectedImageIndex((prev) => 
+    setSelectedImageIndex((prev) =>
       prev === product.images.length - 1 ? 0 : prev + 1
     );
   };
 
   const handlePrevImage = () => {
-    setSelectedImageIndex((prev) => 
+    setSelectedImageIndex((prev) =>
       prev === 0 ? product.images.length - 1 : prev - 1
     );
   };
@@ -168,20 +168,14 @@ const ProductDetail = () => {
           <div className="luxury-gallery">
             <div className="main-image-container" onMouseEnter={() => setZoomActive(true)} onMouseLeave={() => setZoomActive(false)}>
               {zoomActive ? (
-                <InnerImageZoom {...{
-                  smallImage: {
-                    alt: product.name,
-                    isFluidWidth: true,
-                    src: product.images[selectedImageIndex]?.url || product.images[selectedImageIndex] || '/placeholder.jpg'
-                  },
-                  largeImage: {
-                    src: product.images[selectedImageIndex]?.url || product.images[selectedImageIndex] || '/placeholder.jpg',
-                    width: 1200,
-                    height: 1800
-                  },
-                  enlargedImagePosition: 'over',
-                  lensStyle: { backgroundColor: 'rgba(0,0,0,.1)' }
-                }} />
+                <InnerImageZoom
+                  src={product.images[selectedImageIndex]?.url || product.images[selectedImageIndex] || '/placeholder.jpg'}
+                  zoomSrc={product.images[selectedImageIndex]?.url || product.images[selectedImageIndex] || '/placeholder.jpg'}
+                  alt={product.name}
+                  zoomType="hover"        // same as enlargedImagePosition="over"
+                  zoomPreload={true}      // preload zoom image
+                  fadeDuration={200}      // smooth transition
+                />
               ) : (
                 <img
                   src={product.images[selectedImageIndex]?.url || product.images[selectedImageIndex] || '/placeholder.jpg'}
@@ -190,11 +184,11 @@ const ProductDetail = () => {
                   onClick={() => setShowImageModal(true)}
                 />
               )}
-              
+
               <button className="zoom-hint" onClick={() => setZoomActive(!zoomActive)}>
                 <FaExpand /> {zoomActive ? 'Disable Zoom' : 'Hover to Zoom'}
               </button>
-              
+
               <div className="image-nav">
                 <button className="nav-btn prev" onClick={handlePrevImage}>
                   <IoIosArrowBack />
@@ -203,7 +197,7 @@ const ProductDetail = () => {
                   <IoIosArrowForward />
                 </button>
               </div>
-              
+
               <div className="image-badge-group">
                 {product.stock <= 10 && product.stock > 0 && (
                   <span className="badge low-stock">Only {product.stock} left</span>
@@ -218,13 +212,13 @@ const ProductDetail = () => {
                 )}
               </div>
             </div>
-            
+
             {product.images && product.images.length > 1 && (
               <div className="thumbnail-scroller">
                 <div className="thumbnail-track">
                   {product.images.map((img, idx) => (
-                    <div 
-                      key={idx} 
+                    <div
+                      key={idx}
                       className={`thumbnail-wrapper ${selectedImageIndex === idx ? 'active' : ''}`}
                       onClick={() => handleImageSelect(idx)}
                     >
@@ -245,14 +239,14 @@ const ProductDetail = () => {
             <div className="product-header">
               <h1 className="product-title">{product.name}</h1>
               <div className="action-buttons">
-                <button 
+                <button
                   className={`wishlist-btn ${wishlist ? 'active' : ''}`}
                   onClick={toggleWishlist}
                   aria-label={wishlist ? 'Remove from wishlist' : 'Add to wishlist'}
                 >
                   <FaHeart />
                 </button>
-                <button 
+                <button
                   className="share-btn"
                   onClick={shareProduct}
                   aria-label="Share this product"
@@ -261,12 +255,12 @@ const ProductDetail = () => {
                 </button>
               </div>
             </div>
-            
+
             <div className="brand-exclusivity">
               <span className="brand">{product.brand}</span>
               {product.exclusive && <span className="exclusive-label">Exclusive</span>}
             </div>
-            
+
             <div className="price-section">
               {product.oldPrice && product.oldPrice > product.price ? (
                 <>
@@ -278,7 +272,7 @@ const ProductDetail = () => {
               )}
               <div className="price-note">Includes VAT where applicable</div>
             </div>
-            
+
             <div className="rating-availability">
               <div className="rating">
                 <div className="stars">
@@ -294,7 +288,7 @@ const ProductDetail = () => {
                 {product.stock > 0 ? 'In Stock' : 'Out of Stock'}
               </div>
             </div>
-            
+
             <div className="product-meta">
               <div className="meta-item">
                 <span className="meta-label">SKU:</span>
@@ -311,7 +305,7 @@ const ProductDetail = () => {
                 </div>
               )}
             </div>
-            
+
             <div className="product-description">
               <h3>Product Details</h3>
               <p>{product.description}</p>
@@ -323,13 +317,13 @@ const ProductDetail = () => {
                 </ul>
               )}
             </div>
-            
+
             <div className="purchase-section">
               <div className="quantity-selector">
                 <label htmlFor="quantity">Quantity:</label>
                 <div className="quantity-controls">
-                  <button 
-                    className="qty-btn minus" 
+                  <button
+                    className="qty-btn minus"
                     onClick={() => setQuantity(prev => Math.max(1, prev - 1))}
                     disabled={quantity <= 1}
                   >
@@ -344,8 +338,8 @@ const ProductDetail = () => {
                     onChange={e => setQuantity(Math.max(1, Math.min(product.stock, Number(e.target.value))))}
                     className="quantity-input"
                   />
-                  <button 
-                    className="qty-btn plus" 
+                  <button
+                    className="qty-btn plus"
                     onClick={() => setQuantity(prev => Math.min(product.stock, prev + 1))}
                     disabled={quantity >= product.stock}
                   >
@@ -353,7 +347,7 @@ const ProductDetail = () => {
                   </button>
                 </div>
               </div>
-              
+
               <div className="action-buttons">
                 <button
                   className={`btn-luxury add-to-cart ${isInCart(product._id) ? 'in-cart' : ''}`}
@@ -371,7 +365,7 @@ const ProductDetail = () => {
                   Buy Now
                 </button>
               </div>
-              
+
               {product.stock === 0 && (
                 <div className="notify-me">
                   <p>This item is currently out of stock.</p>
@@ -379,7 +373,7 @@ const ProductDetail = () => {
                 </div>
               )}
             </div>
-            
+
             <div className="delivery-options">
               <div className="delivery-option">
                 <div className="delivery-icon">🚚</div>
@@ -388,7 +382,7 @@ const ProductDetail = () => {
                   <p>On orders over 1000. Delivery in 2-3 business days.</p>
                 </div>
               </div>
-              
+
             </div>
           </div>
         </div>
@@ -400,10 +394,10 @@ const ProductDetail = () => {
           <div className="tab-content">
             <h3>Product Story</h3>
             <p>{product.fullDescription || product.description}</p>
-            
+
             <h3>Materials & Care</h3>
             <p>{product.materials || 'Premium materials crafted for longevity and comfort.'}</p>
-            
+
             <h3>Specifications</h3>
             <div className="specs-grid">
               <div className="spec-item">
@@ -412,7 +406,7 @@ const ProductDetail = () => {
               </div>
             </div>
           </div>
-          
+
           <input type="radio" id="tab2" name="tabs" />
           <label htmlFor="tab2">Reviews ({product.numOfReviews || 0})</label>
           <div className="tab-content" id="reviews">
@@ -426,18 +420,18 @@ const ProductDetail = () => {
                 </div>
                 <div className="total">Based on {product.numOfReviews || 0} reviews</div>
               </div>
-              
+
               <div className="rating-distribution">
                 {[5, 4, 3, 2, 1].map((stars) => {
                   const count = product.reviews?.filter(r => r.rating === stars).length || 0;
                   const percentage = product.numOfReviews ? (count / product.numOfReviews) * 100 : 0;
-                  
+
                   return (
                     <div className="rating-bar" key={stars}>
                       <div className="stars">{stars} <FaStar className="star active" /></div>
                       <div className="bar-container">
-                        <div 
-                          className="bar" 
+                        <div
+                          className="bar"
                           style={{ width: `${percentage}%` }}
                         ></div>
                       </div>
@@ -447,7 +441,7 @@ const ProductDetail = () => {
                 })}
               </div>
             </div>
-            
+
             {product.reviews && product.reviews.length > 0 ? (
               <div className="reviews-list">
                 {product.reviews.map((review, idx) => (
@@ -501,7 +495,7 @@ const ProductDetail = () => {
             )}
 
           </div>
-          
+
           <input type="radio" id="tab3" name="tabs" />
           <label htmlFor="tab3">Shipping & Returns</label>
           <div className="tab-content">
@@ -511,10 +505,10 @@ const ProductDetail = () => {
                 <h4>Standard Shipping</h4>
                 <p>Free on orders over $100. Delivery in 3-5 business days.</p>
               </div>
-              
+
             </div>
-            <p>For any questions regarding shipping or returns, please contact our customer service team at 
-            support@luxuryshop.com or call us at (555) 123-4567.</p>
+            <p>For any questions regarding shipping or returns, please contact our customer service team at
+              support@luxuryshop.com or call us at (555) 123-4567.</p>
           </div>
         </div>
 
@@ -547,7 +541,7 @@ const ProductDetail = () => {
             <button className="close-modal" onClick={() => setShowImageModal(false)}>
               &times;
             </button>
-            <img 
+            <img
               src={product.images[selectedImageIndex]?.url || product.images[selectedImageIndex] || '/placeholder.jpg'}
               alt={product.name}
               className="modal-image"
