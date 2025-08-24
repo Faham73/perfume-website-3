@@ -40,7 +40,8 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover; /* makes the video cover entire hero area */
+  object-fit: cover;
+  /* makes the video cover entire hero area */
   z-index: -2;
 }
 
@@ -50,7 +51,8 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.5); /* dark overlay for readability */
+  background: rgba(0, 0, 0, 0.5);
+  /* dark overlay for readability */
   z-index: -1;
 }
 
@@ -79,7 +81,7 @@ body {
 }
 
 /* Buttons */
-.cta-button, 
+.cta-button,
 .view-all-button,
 .category-link {
   display: inline-block;
@@ -140,7 +142,8 @@ body {
   max-width: 600px;
   margin: 0 auto;
 }
-.featured-products{
+
+.featured-products {
   margin-top: 40px;
 }
 
@@ -259,6 +262,122 @@ body {
   background-color: #222;
 }
 
+/* --- RESPONSIVE STYLES --- */
+
+/* For tablets and smaller screens */
+@media (max-width: 992px) {
+  .perfume-section {
+    grid-template-rows: repeat(2, 380px);
+  }
+
+  .perfume-title {
+    font-size: 2.2rem;
+  }
+
+  .perfume-top-right,
+  .perfume-bottom-left {
+    padding: 20px 30px;
+  }
+}
+
+/* For mobile landscape and smaller tablets */
+@media (max-width: 768px) {
+  .perfume-section {
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(4, auto);
+    gap: 30px;
+  }
+
+  /* Reorder grid items for better flow */
+  .perfume-top-left {
+    grid-row: 1;
+    height: 400px;
+  }
+
+  .perfume-top-right {
+    grid-row: 2;
+    align-items: center;
+    text-align: center;
+  }
+
+  .perfume-bottom-left {
+    grid-row: 3;
+    align-items: center;
+    text-align: center;
+  }
+
+  .perfume-bottom-right {
+    grid-row: 4;
+    height: 400px;
+  }
+
+  .perfume-title {
+    font-size: 2rem;
+  }
+
+  .perfume-desc {
+    max-width: 100%;
+  }
+
+  /* Adjust image positioning for mobile */
+  .perfume-top-left .perfume-small-img-top,
+  .perfume-bottom-right .perfume-small-img-bottom {
+    width: 160px;
+  }
+}
+
+/* For mobile portrait */
+@media (max-width: 576px) {
+  .perfume-section {
+    padding: 20px 15px;
+    gap: 20px;
+  }
+
+  .perfume-top-left,
+  .perfume-bottom-right {
+    height: 350px;
+  }
+
+  .perfume-top-right,
+  .perfume-bottom-left {
+    padding: 15px;
+  }
+
+  .perfume-title {
+    font-size: 1.8rem;
+  }
+
+  .perfume-small-text {
+    font-size: 11px;
+  }
+
+  .perfume-desc {
+    font-size: 0.9rem;
+  }
+
+  /* Adjust image positioning for mobile */
+  .perfume-top-left .perfume-small-img-top,
+  .perfume-bottom-right .perfume-small-img-bottom {
+    width: 140px;
+  }
+}
+
+/* For very small screens */
+@media (max-width: 400px) {
+  .perfume-title {
+    font-size: 1.6rem;
+  }
+
+  .btn-black {
+    padding: 10px 18px;
+    font-size: 0.8rem;
+  }
+
+  .perfume-top-left .perfume-small-img-top,
+  .perfume-bottom-right .perfume-small-img-bottom {
+    width: 120px;
+  }
+}
 
 
 /* Products Grid */
@@ -273,13 +392,13 @@ body {
   background: white;
   border-radius: 10px;
   overflow: hidden;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
   transition: var(--transition);
 }
 
 .product-card:hover {
   transform: translateY(-10px);
-  box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
 }
 
 .product-image {
@@ -334,13 +453,25 @@ body {
 
 /* Animations */
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* Responsive Design */
@@ -348,7 +479,7 @@ body {
   .hero-content h1 {
     font-size: 3rem;
   }
-  
+
   .hero-tagline {
     font-size: 1.5rem;
   }
@@ -358,15 +489,15 @@ body {
   .hero-content h1 {
     font-size: 2.5rem;
   }
-  
+
   .hero-tagline {
     font-size: 1.3rem;
   }
-  
+
   .section-header h2 {
     font-size: 2rem;
   }
-  
+
   .products-grid {
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   }
@@ -376,19 +507,19 @@ body {
   .hero-section {
     padding: 120px 20px;
   }
-  
+
   .hero-content h1 {
     font-size: 2rem;
   }
-  
+
   .hero-description {
     font-size: 1rem;
   }
-  
+
   .categories-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .section-header {
     margin-bottom: 2rem;
   }

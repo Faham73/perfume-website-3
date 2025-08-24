@@ -59,11 +59,17 @@ const Home = () => {
             <h2>Featured Fragrances</h2>
             <p>Our most exquisite creations</p>
           </div>
+
           <div className="products-grid">
-            {featuredProducts.map(product => (
-              <ProductCard key={product._id} product={product} />
-            ))}
+            {featuredProducts && featuredProducts.length > 0 ? (
+              featuredProducts.map(product => (
+                <ProductCard key={product._id} product={product} />
+              ))
+            ) : (
+              <p>No featured products available.</p>
+            )}
           </div>
+
           <div className="view-all-container">
             <Link to="/products" className="view-all-button">
               View All Products
@@ -71,6 +77,7 @@ const Home = () => {
           </div>
         </div>
       </section>
+
 
       {/* New Arrivals */}
       <section class="perfume-section">
@@ -89,8 +96,7 @@ const Home = () => {
             FRAGRANCE
           </h2>
           <p class="perfume-desc">
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-            tempor incididunt ut labore et dolore magna aliqua.
+            Discover our signature scent that has captivated senses for generations. Crafted with the finest ingredients from around the world, this timeless fragrance opens with bright citrus notes, unfolds into a heart of jasmine and rose, and settles into a warm base of sandalwood and vanilla. Experience the elegance that has defined luxury perfumery for decades.
           </p>
           <button class="btn-black">SHOP NOW</button>
         </div>
@@ -104,8 +110,7 @@ const Home = () => {
             ELECTRIC
           </h2>
           <p class="perfume-desc">
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-            tempor incididunt ut labore et dolore magna aliqua.
+            This vibrant composition captures the energy of a modern metropolis with its bold character. The initial burst of zesty bergamot and pink pepper evolves into an aromatic heart of lavender and geranium, finally resting on a foundation of earthy vetiver and sensual musk. A fragrance that embodies both spontaneity and sophistication for the contemporary individual.
           </p>
           <button class="btn-black">DISCOVER</button>
         </div>
@@ -126,9 +131,13 @@ const Home = () => {
             <p>Most loved fragrances</p>
           </div>
           <div className="products-grid">
-            {bestsellerProducts.map(product => (
-              <ProductCard key={product._id} product={product} />
-            ))}
+            {featuredProducts && featuredProducts.length > 0 ? (
+              featuredProducts.map(product => (
+                <ProductCard key={product._id} product={product} />
+              ))
+            ) : (
+              <p>No featured products available.</p>
+            )}
           </div>
         </div>
       </section>

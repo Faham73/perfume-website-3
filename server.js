@@ -10,23 +10,32 @@ const app = express();
 
 // ✅ Trust proxy in production
 if (process.env.NODE_ENV === 'production') {
-  app.set('trust proxy', 1); 
+  app.set('trust proxy', 1);
 }
 
 // Enhanced CORS Configuration
+const allowedOrigins = [
+  'http://localhost:3000',
+  'http://127.0.0.1:3000',
+  'http://localhost:3002',
+  'http://127.0.0.1:3002',
+  process.env.FRONTEND_URL,
+  process.env.FRONTEND_URL_WWW
+].filter(Boolean);
+
 app.use(cors({
-  origin: [
-    'http://localhost:3000', // React dev server
-    'http://127.0.0.1:3000', // Alternative localhost
-    'http://localhost:3002', // Alternative React dev server port
-    'http://127.0.0.1:3002', // Alternative localhost on port 3002
-    process.env.FRONTEND_URL // Production frontend URL
-  ].filter(Boolean),
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    }
+    return callback(new Error(`Not allowed by CORS: ${origin}`));
+  },
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
   credentials: true,
   maxAge: 86400
 }));
+
 
 // Security Middleware
 app.use(helmet());
@@ -63,11 +72,11 @@ mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/perfume_a
   retryWrites: true,
   w: 'majority'
 })
-.then(() => console.log('Connected to MongoDB'))
-.catch(err => {
-  console.error('MongoDB connection error:', err);
-  process.exit(1); // Exit if DB connection fails
-});
+  .then(() => console.log('Connected to MongoDB'))
+  .catch(err => {
+    console.error('MongoDB connection error:', err);
+    process.exit(1); // Exit if DB connection fails
+  });
 
 // Static files with cache control
 app.use('/uploads', express.static('uploads', {
@@ -97,7 +106,7 @@ app.get('/api/health', (req, res) => {
 // Error handling middleware
 app.use((err, req, res, next) => {
   console.error(err.stack);
-  
+
   // Handle rate limit errors
   if (err.status === 429) {
     return res.status(429).json({
@@ -105,7 +114,7 @@ app.use((err, req, res, next) => {
       message: err.message
     });
   }
-  
+
   // Handle Mongoose validation errors
   if (err.name === 'ValidationError') {
     return res.status(400).json({
@@ -114,21 +123,37 @@ app.use((err, req, res, next) => {
       errors: err.errors
     });
   }
-  
+
   // Default error handler
-  res.status(500).json({ 
+  res.status(500).json({
     status: 'error',
     message: process.env.NODE_ENV === 'production' ? err.message : 'Something went wrong!'
   });
 });
 
-// 404 handler
-app.use('*', (req, res) => {
-  res.status(404).json({ 
-    status: 'error',
-    message: 'Route not found' 
+const path = require("path");
+
+// Serve React build in production
+if (process.env.NODE_ENV === "production") {
+  const buildPath = path.join(__dirname, "client", "build");
+
+  app.use(express.static(buildPath));
+
+  app.get("*", (req, res, next) => {
+    // Only handle non-API routes here
+    if (req.path.startsWith("/api")) return next();
+    res.sendFile(path.join(buildPath, "index.html"));
   });
+}
+
+// 404 handler 
+app.use('*', (req, res) => { 
+  res.status(404).json({ 
+    status: 'error', 
+    message: 'Route not found' 
+  }); 
 });
+
 
 // Server configuration
 const PORT = process.env.PORT || 5000;

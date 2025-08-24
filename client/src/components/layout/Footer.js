@@ -14,18 +14,18 @@ const Footer = () => {
               Experience elegance and sophistication with our premium perfumes.
             </p>
             <div style={styles.socialLinks}>
-              <a href="#" style={styles.socialLink}>
+              <a href="https://www.facebook.com/Orkideis/" style={styles.socialLink} target="_blank" rel="noopener noreferrer">
                 <FaFacebook />
               </a>
-              <a href="#" style={styles.socialLink}>
+              {/* <a href="#" style={styles.socialLink} target="_blank" rel="noopener noreferrer">
                 <FaTwitter />
               </a>
-              <a href="#" style={styles.socialLink}>
+              <a href="#" style={styles.socialLink} target="_blank" rel="noopener noreferrer">
                 <FaInstagram />
               </a>
-              <a href="#" style={styles.socialLink}>
+              <a href="#" style={styles.socialLink} target="_blank" rel="noopener noreferrer">
                 <FaLinkedin />
-              </a>
+              </a> */}
             </div>
           </div>
 
@@ -62,7 +62,7 @@ const Footer = () => {
 
         <div style={styles.footerBottom}>
           <p style={styles.copyright}>
-            © 2024 Luxury Perfumes. All rights reserved.
+            © 2025 ORKIDIES. All rights reserved.
           </p>
           <div style={styles.legalLinks}>
             <Link to="/privacy" style={styles.legalLink}>Privacy Policy</Link>
