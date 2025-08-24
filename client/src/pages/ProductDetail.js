@@ -5,8 +5,7 @@ import api from '../utils/axios';
 import { FaStar, FaShoppingCart, FaChevronLeft, FaChevronRight, FaUserCircle, FaHeart, FaShare, FaExpand } from 'react-icons/fa';
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
 import InnerImageZoom from 'react-inner-image-zoom';
-import 'react-inner-image-zoom/lib/InnerImageZoom/styles.css';
-
+import 'react-inner-image-zoom/lib/styles.css';
 import './ProductDetail.css';
 
 const ProductDetail = () => {
