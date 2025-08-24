@@ -4,7 +4,9 @@ import { useCart } from '../contexts/CartContext';
 import api from '../utils/axios';
 import { FaStar, FaShoppingCart, FaChevronLeft, FaChevronRight, FaUserCircle, FaHeart, FaShare, FaExpand } from 'react-icons/fa';
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
-import ReactImageMagnify from 'react-image-magnify';
+import ReactImageMagnify from 'react-inner-image-zoom';
+import 'react-inner-image-zoom/lib/ReactImageMagnify/styles.css';
+
 import './ProductDetail.css';
 
 const ProductDetail = () => {
